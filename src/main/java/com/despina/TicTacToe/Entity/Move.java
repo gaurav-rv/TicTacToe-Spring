@@ -1,5 +1,6 @@
 package com.despina.TicTacToe.Entity;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data

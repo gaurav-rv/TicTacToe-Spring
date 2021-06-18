@@ -1,9 +1,11 @@
 package com.despina.TicTacToe.Entity;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class Game<Player> {
     private int[][] board;
     private String id;
@@ -14,3 +16,6 @@ public class Game<Player> {
     private int[] row;
     private int[] col;
 }
+
+
+

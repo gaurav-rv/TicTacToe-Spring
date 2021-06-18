@@ -1,20 +1,22 @@
 package com.despina.TicTacToe.Storage;
 
 import com.despina.TicTacToe.Entity.Game;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 
+@Component
 public class GameStorage {
 
     HashMap<String, Game> games;
     private static GameStorage instance;
 
-    public static synchronized GameStorage getInstance(){
-        if(instance == null) {
-            instance = new GameStorage();
-        }
-        return instance;
-    }
+//    public static synchronized GameStorage getInstance(){
+//        if(instance == null) {
+//            instance = new GameStorage();
+//        }
+//        return instance;
+//    }
 
     private GameStorage(){
         this.games = new HashMap<String, Game>();
