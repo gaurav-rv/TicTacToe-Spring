@@ -27,9 +27,14 @@ public class MovesService {
      */
     public boolean verifyEachMove(Move move) throws Exception {
         Game game = gameService.getGamebyID(move.getGameId());
+        if(game.getGameStatus() == GameStatus.FINISHED) return false;
 
         int[][] board = game.getBoard();
-        return Markers.contains(board[move.getX()][move.getY()]);
+        if( move.getX() >board.length-1 || move.getY() >board[0].length -1 || board[move.getX()][move.getY()] != 0  ) return false;
+        //ToDo
+        //check if turn is from the right person.
+
+        return true;
         // TODO
         // check if the same player making move again before his turn
     }
@@ -51,6 +56,7 @@ public class MovesService {
         }
         return game;
     }
+
 
     private boolean checkWin(Game game, Move move) {
         int[] row = game.getRow();

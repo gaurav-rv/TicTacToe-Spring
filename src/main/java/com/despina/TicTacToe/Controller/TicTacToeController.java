@@ -46,8 +46,12 @@ public class TicTacToeController {
     }
 
     @PostMapping
-    public Game makeMove(@RequestBody Move move) throws GameNotFound {
-
-        return null;
+    public Game makeMove(@RequestBody Move move) throws Exception {
+        try{
+            movesService.makeMove(move);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return gameService.getGamebyID(move.getGameId());
     }
 }

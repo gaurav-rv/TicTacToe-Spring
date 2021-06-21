@@ -20,6 +20,7 @@ public class Game<Player> {
     private int[] row;
     private int[] col;
     private Player nextTurnPlayer;
+    private int nextTurn;
 
     @Singular
     private List<Player> connectedPlayers;
