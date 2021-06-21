@@ -1,32 +1,32 @@
 package com.despina.TicTacToe.Storage;
 
 import com.despina.TicTacToe.Entity.Game;
+import com.despina.TicTacToe.Entity.GameStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Component
 public class GameStorage {
 
-    HashMap<String, Game> games;
-    private static GameStorage instance;
+    HashMap<String, Game> games = new HashMap<>();
 
-//    public static synchronized GameStorage getInstance(){
-//        if(instance == null) {
-//            instance = new GameStorage();
-//        }
-//        return instance;
-//    }
-
-    private GameStorage(){
-        this.games = new HashMap<String, Game>();
+    public Optional<Game> getGame(String gameID) {
+        return games.containsKey(gameID) ? Optional.of(games.get(gameID)) : Optional.empty();
     }
 
-    public HashMap<String, Game> getGame(){
-        return games;
-    }
-
-    public void addGame(Game g1){
+    public void addGame(Game g1) {
         games.put(g1.getId(), g1);
+    }
+
+    public Game getRandomGame() {
+        List<Game> collect = games.values().stream().filter(vl -> vl.getGameStatus().compareTo(GameStatus.NEW) == 0).collect(Collectors.toList());
+        Random random = new Random();
+        int randomIndex = random.nextInt(collect.size());
+        return collect.get(randomIndex);
     }
 }
