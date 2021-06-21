@@ -2,55 +2,45 @@ package com.despina.TicTacToe.Service;
 
 import com.despina.TicTacToe.Entity.Game;
 import com.despina.TicTacToe.Entity.GameStatus;
+import com.despina.TicTacToe.Entity.Markers;
 import com.despina.TicTacToe.Entity.Move;
 import com.despina.TicTacToe.Entity.Player;
 import com.despina.TicTacToe.Exception.GameNotFound;
 import com.despina.TicTacToe.Storage.GameStorage;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class MovesService {
 
     @Autowired
-    GameStorage gameStorage;
+    private GameStorage gameStorage;
 
-
-    public Game startGame(Player player, int sizeOfBoard) {
-       Game game=  Game.builder()
-            .id(UUID.randomUUID().toString())
-            .p1(1)
-            .board(new int[sizeOfBoard][sizeOfBoard])
-            .row(new int[sizeOfBoard])
-            .col(new int[sizeOfBoard])
-            .gameStatus(GameStatus.NEW).build();
-
-        gameStorage.addGame(game);
-        return game;
-    }
-
-    public void connectToGameByID() {
-
-    }
-
-    public void connectToRandomGame() {
-
-    }
+    @Autowired
+    private GameService gameService;
 
     /**
-     * To check if the move is valid
+     * To check if the move is valid check if block is already marked and check if the same player making move again before his turn.
      */
-    public void verifyEachMove(Move move) {
+    public boolean verifyEachMove(Move move) throws Exception {
+        Game game = gameService.getGamebyID(move.getGameId());
+
+        int[][] board = game.getBoard();
+        return Markers.contains(board[move.getX()][move.getY()]);
+        // TODO
+        // check if the same player making move again before his turn
     }
 
-    public Game makeMove(Move move) throws GameNotFound {
-        if (!gameStorage.getGame().containsKey(move.getGameId())) {
-            throw new GameNotFound("Could not find game");
+    public Game makeMove(Move move) throws Exception {
+
+        Game game = gameService.getGamebyID(move.getGameId());
+
+        if (verifyEachMove(move)) {
+            throw new Exception("invalid move.");
         }
-        Game game = gameStorage.getGame().get(move.getGameId());
 
         int[][] board = game.getBoard();
         board[move.getX()][move.getY()] = move.getMarkers().getVal();
